@@ -1,7 +1,6 @@
 from chatterbot.preprocessors import clean_whitespace
 from chatterbot.conversation import Statement
 
-
 def Crush(statement):
     '''
     ``statement``: Statement Object
