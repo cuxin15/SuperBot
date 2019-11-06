@@ -14,12 +14,10 @@ import aiohttp
 import requests
 import json
 import unidecode
+import forecasts
 
 load_dotenv()
-
-
-
-# SETTING==================================================
+# SETTING=========================================
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD_ID = os.getenv('DISCORD_GUILD')
 # token for OpenWeather
@@ -50,6 +48,7 @@ async def on_member_join(member):
     await member.dm_channel.send(
             f'Chào {member.name}, chào mừng người anh em đến với Xóm trọ vui vẻ :)'
         )
+
 
 @bot.command(name='search', help='Search something on wikipedia and attach an images')
 async def search(ctx, *args):
@@ -100,7 +99,7 @@ async def search(ctx, *args):
 
 
 @bot.command(name='weather', help='Show weather information at a location')
-async def weather(ctx, *args):
+async def weather_current(ctx, *args):
     # args = ('Đà','Nẵng') => danang
     args = map(toLowcase,args)
     print(args)
@@ -118,5 +117,23 @@ async def weather(ctx, *args):
             print(json_string)
             await ctx.send(json_string)
             break
+
+
+@bot.command(name='weather_forecasts', help='weather forecasts for 8 days')
+async def weather_forecasts(ctx, *args):
+    # $weather_forecast Vinh Long
+    location = ' '.join(args)
+    im = forecasts.element_screenshot(location=location,
+                       apikey='0092e33dc81d0caadd56e552dacd5717',
+                       eleLongestHeight='/html/body/main',
+                       by1='xpath',
+                       eleScreenshot='container-openweathermap-widget-11',
+                       by2='id',
+                       img_name='weather.png')
+
+    file = discord.File('weather.png', filename="image.png")
+    embed = discord.Embed()
+    embed.set_image(url="attachment://image.png")
+    await ctx.send(file=file, embed=embed)
 
 bot.run(TOKEN)

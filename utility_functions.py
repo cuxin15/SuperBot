@@ -1,4 +1,3 @@
-import imgkit
 import unidecode
 
 # UTILITY FUNCTION
@@ -53,6 +52,4 @@ def iDontKnowItsName(url,query):
 def toLowcase(string):
     return unidecode.unidecode(string).lower()
 
-
-imgkit.from_file('widget-weather.html', 'out.jpg')
 
